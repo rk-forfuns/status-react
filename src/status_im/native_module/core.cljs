@@ -6,11 +6,12 @@
             [status-im.ui.components.react :as react]
             [status-im.utils.platform :as platform]
             [status-im.utils.types :as types]
-            [taoensso.timbre :as log]))
+            [taoensso.timbre :as log]
+            ["react-native" :as react-native]))
 
 (defn status []
-  (when (exists? (.-NativeModules rn-dependencies/react-native))
-    (.-Status (.-NativeModules rn-dependencies/react-native))))
+  (when (exists? (.-NativeModules react-native))
+    (.-Status (.-NativeModules react-native))))
 
 (def adjust-resize 16)
 

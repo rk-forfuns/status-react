@@ -1,9 +1,9 @@
 (ns status-im.i18n-resources
-  (:require [status-im.react-native.js-dependencies :as rn-dependencies]
-            [clojure.string :as string]))
+  (:require ["react-native-languages" :default react-native-languages]
+            ["i18n-js" :as i18n]))
 
 (def default-device-language
-  (keyword (.-language rn-dependencies/react-native-languages)))
+  (keyword (.-language react-native-languages)))
 
 (def languages [:af :ar :bel :cs :da :de :de_ch :el :en :es :es_419 :es_ar :es_mx :fa :fi :fr :fr_ch :fy :he :hi :hu :id :it_ch :ja :ko :la :lt :lv :ms :nb :ne :nl :pl :pt_br :pt_pt :ro :ru :sl :sr_rs_cyrl :sr_rs :latn :sv :sw :th :tr :uk :ur :vi :zh])
 
@@ -86,7 +86,7 @@
 (defn load-language [lang]
   (let [lang-key (valid-language (keyword lang))]
     (when-not (contains? @loaded-languages lang-key)
-      (aset (.-translations rn-dependencies/i18n)
+      (aset (.-translations i18n)
             lang
             (require-translation lang-key))
       (swap! loaded-languages conj lang-key))))

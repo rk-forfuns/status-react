@@ -5,25 +5,36 @@
    [re-frame.core :as re-frame]
    [taoensso.timbre :as log]
    [status-im.utils.platform :as platform]
+   ["react-native" :refer (BackHandler)]
+   ["@react-navigation/native" :refer (NavigationContainer StackActions CommonActions useFocusEffect useCallback) :as react-navigation]
+   ["@react-navigation/stack" :refer (createStackNavigator TransitionPresets)]
+   ["@react-navigation/bottom-tabs" :refer (createBottomTabNavigator)]
    [oops.core :refer [ocall oget]]
-   [status-im.react-native.js-dependencies :as js-dependencies]))
+   [status-im.utils.core :as utils]
+   [status-im.ui.screens.routing.screens :as screens]
+   [status-im.ui.screens.routing.intro-login-stack :as intro-login-stack]
+   [status-im.ui.screens.routing.chat-stack :as chat-stack]
+   [status-im.ui.screens.routing.wallet-stack :as wallet-stack]
+   [status-im.ui.screens.routing.profile-stack :as profile-stack]
+   [status-im.ui.screens.routing.browser-stack :as browser-stack]
+   [status-im.ui.screens.routing.modals :as modals]
+   [status-im.ui.components.tabbar.core :as tabbar]
+   [status-im.ui.components.status-bar.view :as status-bar]
+   [status-im.ui.components.tabbar.styles :as tabs.styles]))
 
-(defonce native js-dependencies/react-navigation-native)
-(defonce stack  js-dependencies/react-navigation-stack)
-(defonce bottom-tabs js-dependencies/react-navigation-bottom-tabs)
+(defonce native react-navigation)
 
-(def navigation-container (reagent/adapt-react-class
-                           (oget native "NavigationContainer")))
+(def navigation-container (reagent/adapt-react-class NavigationContainer))
 
-(def use-focus-effect (oget native "useFocusEffect"))
-(def use-callback (oget js-dependencies/react "useCallback"))
+(def use-focus-effect useFocusEffect)
+(def use-callback useCallback)
 
-(def add-back-handler-listener (oget js-dependencies/back-handler "addEventListener"))
-(def remove-back-handler-listener (oget js-dependencies/back-handler "removeEventListener"))
+(def add-back-handler-listener (.addEventListener BackHandler))
+(def remove-back-handler-listener (.removeEventListener BackHandler))
 
-(def transition-presets (oget stack "TransitionPresets"))
+(def transition-presets TransitionPresets)
 
-(def modal-presentation-ios (merge (js->clj (oget transition-presets "ModalPresentationIOS"))
+(def modal-presentation-ios (merge (js->clj (.-ModalPresentationIOS ^js transition-presets))
                                    {:gestureEnabled     true
                                     :cardOverlayEnabled true}))
 
@@ -92,15 +103,15 @@
             (mapv screen children)))))
 
 (defn create-stack []
-  (let [nav-obj (ocall stack "createStackNavigator")]
+  (let [nav-obj (createStackNavigator)]
     (get-navigator nav-obj)))
 
 (defn create-bottom-tabs []
-  (let [nav-obj (ocall bottom-tabs "createBottomTabNavigator")]
+  (let [nav-obj (createBottomTabNavigator)]
     (get-navigator nav-obj)))
 
-(def common-actions (oget native "CommonActions"))
-(def stack-actions (oget native "StackActions"))
+(def common-actions CommonActions)
+(def stack-actions StackActions)
 
 (defonce navigator-ref (reagent/atom nil))
 

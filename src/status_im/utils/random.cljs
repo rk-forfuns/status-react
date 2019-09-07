@@ -1,9 +1,9 @@
 (ns status-im.utils.random
   (:require [re-frame.core :as re-frame]
-            [status-im.js-dependencies :as dependencies]
-            [status-im.utils.datetime :as datetime]))
+            [status-im.utils.datetime :as datetime]
+            ["chance" :as Chance]))
 
-(def chance (dependencies/Chance.))
+(def chance (Chance.))
 
 (defn guid []
   (.guid chance))
