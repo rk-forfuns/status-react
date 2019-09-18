@@ -195,6 +195,12 @@
    [react/image {:style {:margin 10 :width 140 :height 140}
                  :source {:uri (contenthash/url (:hash content))}}]])
 
+(defmethod message-content constants/content-type-image
+  [wrapper {:keys [content] :as message}]
+  [wrapper message
+   [react/image {:style {:margin-vertical 10 :width 140 :height 140 :border-radius 8}
+                 :source {:uri (str "https://ipfs.infura.io/ipfs/" (:hash content))}}]])
+
 (defmethod message-content :default
   [wrapper {:keys [content-type] :as message}]
   [wrapper message

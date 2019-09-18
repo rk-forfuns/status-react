@@ -23,6 +23,7 @@
             [status-im.ui.screens.chat.stickers.views :as stickers]
             [status-im.ui.screens.chat.styles.main :as style]
             [status-im.ui.screens.chat.toolbar-content :as toolbar-content]
+            [status-im.ui.screens.chat.image.views :as image]
             [status-im.ui.screens.profile.tribute-to-talk.views
              :as
              tribute-to-talk.views]
@@ -436,6 +437,8 @@
      (case input-bottom-sheet
        :stickers
        [stickers/stickers-view]
+       :images
+       [image/image-view]
        :extensions
        [extensions/extensions-view]
        nil)]))

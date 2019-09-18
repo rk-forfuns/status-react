@@ -21,6 +21,7 @@
             [status-im.utils.utils :as utils]
             [status-im.utils.config :as config]
             [taoensso.timbre :as log]
+            [status-im.ui.screens.chat.image.views :as image]
             [status-im.ui.screens.chat.stickers.views :as stickers]
             [status-im.ui.screens.chat.extensions.views :as extensions]))
 
@@ -208,6 +209,8 @@
        [reply-message-view]
        [react/view {:style style/input-container}
         [input-view {:single-line-input? single-line-input? :set-text set-text :state-text state-text}]
+        (when input-text-empty?
+          [image/button show-image?])
         (when (and input-text-empty? mainnet?)
           [stickers/button (= :stickers input-bottom-sheet)])
         (when (and input-text-empty?) ;;TODO show only for 1-1 chats?

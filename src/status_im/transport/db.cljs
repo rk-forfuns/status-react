@@ -59,7 +59,7 @@
 (spec/def :message.content/params (spec/map-of keyword? any?))
 
 (spec/def ::content-type #{constants/content-type-text constants/content-type-command
-                           constants/content-type-emoji
+                           constants/content-type-emoji constants/content-type-image
                            constants/content-type-command-request constants/content-type-sticker})
 (spec/def ::message-type #{:group-user-message :public-group-user-message :user-message})
 (spec/def ::clock-value (spec/and pos-int?
@@ -94,6 +94,7 @@
 (spec/def :message.command/content (spec/keys :req-un [:message.content/command-path :message.content/params]))
 
 (spec/def :message.sticker/content (spec/keys :req-un [:message.content/hash]))
+(spec/def :message.image/content (spec/keys :req-un [:message.content/hash]))
 
 (defmulti content-type :content-type)
 
@@ -108,6 +109,10 @@
 (defmethod content-type constants/content-type-sticker [_]
   (spec/merge :message/message-common
               (spec/keys :req-un [:message.sticker/content])))
+
+(defmethod content-type constants/content-type-image [_]
+  (spec/merge :message/message-common
+              (spec/keys :req-un [:message.image/content])))
 
 (defmethod content-type :default [_]
   (spec/merge :message/message-common

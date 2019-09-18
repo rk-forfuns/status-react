@@ -155,6 +155,14 @@
                                                             :pack    pack
                                                             :text    "Update to latest version to see a nice sticker here!"})})))
 
+(fx/defn send-image
+  [{:keys [db] :as cofx} hash]
+  (when-not (string/blank? hash)
+    (chat.message/send-message cofx {:chat-id      (:current-chat-id db)
+                                     :content-type constants/content-type-image
+                                     :content      {:chat-id (:current-chat-id db)
+                                                    :hash    hash}})))
+
 (fx/defn send-current-message
   "Sends message from current chat input"
   [{{:keys [current-chat-id id->command access-scope->command-id] :as db} :db :as cofx}]
@@ -174,6 +182,13 @@
   {:events [:chat/send-transaction-result]}
   [cofx chat-id params result]
   (commands.sending/send cofx chat-id (get-in cofx [:db :id->command ["send" #{:personal-chats}]]) (assoc params :tx-hash result)))
+
+(fx/defn chat-image-added-to-ipfs
+  {:events [:chat-image-added-to-ipfs]}
+  [{:keys [db] :as cofx} {:keys [hash]}]
+  (fx/merge cofx
+            {:db (chat/set-chat-ui-props db {:send-image-loading? false :show-image? nil :send-image nil})}
+            (send-image hash)))
 
 ;; effects
 
