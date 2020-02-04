@@ -5,11 +5,9 @@
             status-im.ui.screens.db
             status-im.ui.screens.events
             status-im.subs
-            [status-im.react-native.js-dependencies :as rn-dependencies]
-            ["react-native-screens" :refer (enableScreens)]
             ["react-native-languages" :default react-native-languages]
             ["react-native-shake" :as react-native-shake]
-            ["react-native-screens" :as react-native-screens]
+            ["react-native-screens" :refer (enableScreens)]
             [status-im.ui.screens.views :as views]
             [status-im.ui.components.react :as react]
             [status-im.core :as core]

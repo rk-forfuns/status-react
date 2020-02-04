@@ -1,6 +1,5 @@
 (ns status-im.utils.snoopy
-  (:require [status-im.react-native.js-dependencies :as js-dependencies]
-            [status-im.utils.config :as config]
+  (:require [status-im.utils.config :as config]
             ["react-native/Libraries/vendor/emitter/EventEmitter" :refer [EventEmitter]]
             ["rn-snoopy" :default snoopy]
             ["rn-snoopy/stream/filter" :default sn-filter]

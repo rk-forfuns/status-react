@@ -1,5 +1,5 @@
 (ns ^{:doc "Implementation of varint based on https://github.com/chrisdickinson/varint"}
-    status-im.utils.varint
+ status-im.utils.varint
   (:require [status-im.ethereum.abi-spec :as abi-spec]
             ["web3-utils" :as utils]))
 

@@ -1,5 +1,6 @@
 (ns status-im.utils.utils
   (:require [clojure.string :as string]
+            [goog.string :as gstring]
             [status-im.i18n :as i18n]
             [re-frame.core :as re-frame]
             [status-im.utils.platform :as platform]
@@ -127,7 +128,7 @@
 (defn clear-interval [id]
   (if platform/desktop?
     (js/clearInterval id)
-    (.clearInterval background-timer id)
+    (.clearInterval background-timer id)))
 
 (defn format-decimals [amount places]
   (let [decimal-part (get (string/split (str amount) ".") 1)]

@@ -1,8 +1,7 @@
 (ns status-im.native-module.core
   (:require [clojure.string :as string]
             [re-frame.core :as re-frame]
-            [status_im.utils.db :as utils.db]
-            [status-im.react-native.js-dependencies :as rn-dependencies]
+            [status-im.utils.db :as utils.db]
             [status-im.ui.components.react :as react]
             [status-im.utils.platform :as platform]
             [status-im.utils.types :as types]

@@ -1,6 +1,5 @@
 (ns status-im.ui.components.webview
   (:require [reagent.core :as reagent]
-            [status-im.react-native.js-dependencies :as js-dependencies]
             [reagent.core :as reagent.core]
             [status-im.utils.platform :as platform]
             [status-im.utils.config :as config]

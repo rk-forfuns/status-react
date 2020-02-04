@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "react-native start"
+    "start": "react-native start",
+    "app:watch": "shadow-cljs compile android"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.6",
@@ -58,6 +59,7 @@
     "coveralls": "^3.0.4",
     "nyc": "^14.1.1",
     "process": "0.11.10",
-    "rn-snoopy": "git+https://github.com/status-im/rn-snoopy.git#v2.0.2-status"
+    "rn-snoopy": "git+https://github.com/status-im/rn-snoopy.git#v2.0.2-status",
+    "shadow-cljs": "2.8.52"
   }
 }

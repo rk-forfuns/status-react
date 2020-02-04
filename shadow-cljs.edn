@@ -1,10 +1,5 @@
 ;; shadow-cljs configuration
-{:source-paths ["react-native/src/mobile"
-                "components/src"
-                "src"
-                "react-native/src/cljsjs"
-                "resources"
-                "dev"]
+{:source-paths ["src" "dev"]
 
  :dependencies [[org.clojure/core.async "0.4.474"]
                 [reagent "0.7.0"]

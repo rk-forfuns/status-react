@@ -1,5 +1,5 @@
 (ns ^{:doc "Utils for transport layer"}
-    status-im.transport.utils
+ status-im.transport.utils
   (:require [clojure.string :as string]
             [status-im.ethereum.core :as ethereum]))
 

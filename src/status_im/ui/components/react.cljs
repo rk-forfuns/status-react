@@ -26,13 +26,12 @@
 (def app-registry (.-AppRegistry react-native))
 (def app-state (.-AppState react-native))
 (def view (reagent/adapt-react-class (.-View react-native)))
-(def progress-bar (reagent/adapt-react-class (.- ProgressBarAndroid react-native)))
+(def progress-bar (reagent/adapt-react-class (.-ProgressBarAndroid react-native)))
 
 (def status-bar-class (.-StatusBar react-native))
 
 (def scroll-view-class (reagent/adapt-react-class (.-ScrollView react-native)))
 (def keyboard-avoiding-view-class (reagent/adapt-react-class (.-KeyboardAvoidingView react-native)))
-
 
 (def text-class (reagent/adapt-react-class (.-Text react-native)))
 (def text-input-class (reagent/adapt-react-class (.-TextInput react-native)))
@@ -132,32 +131,32 @@
   (let [render-fn (fn [options text]
                     [text-input-class
                      (merge
-                       {:underline-color-android  :transparent
-                        :max-font-size-multiplier max-font-size-multiplier
-                        :placeholder-text-color   colors/text-gray
-                        :placeholder              (i18n/label :t/type-a-message)
-                        :value                    text}
-                       (-> options
-                           (dissoc :preserve-input?)
-                           (update :style typography/get-style)
-                           (update :style dissoc :line-height)))])]
+                      {:underline-color-android  :transparent
+                       :max-font-size-multiplier max-font-size-multiplier
+                       :placeholder-text-color   colors/text-gray
+                       :placeholder              (i18n/label :t/type-a-message)
+                       :value                    text}
+                      (-> options
+                          (dissoc :preserve-input?)
+                          (update :style typography/get-style)
+                          (update :style dissoc :line-height)))])]
     (if (:preserve-input? options)
       render-fn
       (let [input-ref (atom nil)]
         (reagent/create-class
-          {:component-will-unmount #(when @input-ref
-                                      (swap! text-input-refs dissoc @input-ref))
-           :reagent-render
-           (fn [options text]
-             (render-fn (assoc options :ref
-                               (fn [r]
-                                 ;; Store input and its defaultValue
-                                 ;; one we receive a non-nil ref
-                                 (when (and r (nil? @input-ref))
-                                   (swap! text-input-refs assoc r (:default-value options)))
-                                 (reset! input-ref r)
-                                 (when (:ref options)
-                                   ((:ref options) r)))) text))})))))
+         {:component-will-unmount #(when @input-ref
+                                     (swap! text-input-refs dissoc @input-ref))
+          :reagent-render
+          (fn [options text]
+            (render-fn (assoc options :ref
+                              (fn [r]
+                                ;; Store input and its defaultValue
+                                ;; one we receive a non-nil ref
+                                (when (and r (nil? @input-ref))
+                                  (swap! text-input-refs assoc r (:default-value options)))
+                                (reset! input-ref r)
+                                (when (:ref options)
+                                  ((:ref options) r)))) text))})))))
 
 (defn i18n-text
   [{:keys [style key]}]
@@ -240,7 +239,7 @@
 (views/defview with-activity-indicator
   [{:keys [timeout style enabled? preview]} comp]
   (views/letsubs
-      [loading (reagent/atom true)]
+    [loading (reagent/atom true)]
     {:component-did-mount (fn []
                             (if (or (nil? timeout)
                                     (> 100 timeout))
