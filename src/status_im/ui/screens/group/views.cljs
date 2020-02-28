@@ -11,6 +11,7 @@
             [status-im.ui.components.button :as button]
             [status-im.ui.components.list-selection :as list-selection]
             [status-im.ui.components.common.common :as components.common]
+            [status-im.ui.components.button :as button]
             [status-im.ui.components.react :as react]
             [status-im.ui.components.list.views :as list]
             [status-im.ui.components.toolbar.view :as toolbar]
@@ -92,17 +93,24 @@
        :on-press handle-invite-friends-pressed
        :label    :t/invite-friends}])])
 
-(views/defview bottom-container [{:keys [on-press disabled label accessibility-label]}]
+(views/defview bottom-container [{:keys [on-press on-press-prev disabled label accessibility-label]}]
   [react/view {:style {:height         52
                        :elevation      8
                        :shadow-radius  4
                        :shadow-offset  {:width 0 :height -5}
                        :shadow-opacity 0.3
                        :shadow-color   "rgba(0, 9, 26, 0.12)"}}
+   (when on-press-prev
+     [react/view
+      [button/button
+       {:type                :previous
+        :accessibility-label (or accessibility-label :previous-button)
+        :label               (i18n/label :t/back)
+        :on-press            on-press-prev}]])
    [react/view {:style components.styles/flex}]
-   [react/view {:style styles/bottom-container}
-    [components.common/bottom-button
-     {:forward?            true
+   [react/view
+    [button/button
+     {:type                :next
       :accessibility-label (or accessibility-label :next-button)
       :label               label
       :disabled?           disabled
@@ -157,6 +165,7 @@
                           :enable-empty-sections        true}]]]
        [bottom-container {:on-press            #(re-frame/dispatch [:group-chats.ui/create-pressed group-name])
                           :disabled            (string/blank? group-name)
+                          :on-press-prev       #(re-frame/dispatch [:navigate-back])
                           :label               (i18n/label :t/create-group-chat)
                           :accessibility-label :create-group-chat-button}]])))
 
