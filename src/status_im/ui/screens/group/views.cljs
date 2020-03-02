@@ -171,7 +171,7 @@
 
 (defn searchable-contact-list []
   (let [search-value (reagent/atom nil)]
-    (fn [{:keys [contacts allow-new-users?]}]
+    (fn [{:keys [contacts toggle-fn allow-new-users?]}]
       [react/view {:style {:flex 1}}
        [react/view {:style styles/search-container}
         [search/search-input {:on-cancel #(reset! search-value nil)
@@ -180,7 +180,7 @@
                             :padding-vertical 8}}
         (if (seq contacts)
           [toggle-list {:contacts  (filter-contacts @search-value contacts)
-                        :render-fn (partial group-toggle-contact allow-new-users?)}]
+                        :render-fn (partial toggle-fn allow-new-users?)}]
           [no-contacts])]])))
 
 ;; Start group chat
@@ -200,6 +200,7 @@
                       :max      constants/max-group-chat-participants})]]]]
      [searchable-contact-list
       {:contacts         contacts
+       :toggle-fn        group-toggle-contact
        :allow-new-users? (< selected-contacts-count
                             (dec constants/max-group-chat-participants))}]
      [bottom-container {:on-press #(re-frame/dispatch [:navigate-to :new-group])
@@ -223,6 +224,7 @@
                         :max      constants/max-group-chat-participants})]]]]
        [searchable-contact-list
         {:contacts         contacts
+         :toggle-fn        group-toggle-participant
          :allow-new-users? (< (+ current-participants-count
                                  selected-contacts-count)
                               constants/max-group-chat-participants)}]
