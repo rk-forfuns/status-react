@@ -43,3 +43,8 @@
 (def react-navigation-native      (js/require "@react-navigation/native"))
 (def react-navigation-stack       (js/require "@react-navigation/stack"))
 (def react-navigation-bottom-tabs (js/require "@react-navigation/bottom-tabs"))
+
+(def react-native-haptic-feedback (js/require "react-native-haptic-feedback"))
+
+(def react-native-reanimated (js/require "react-native-reanimated"))
+(def react-native-gesture-handler (js/require "react-native-gesture-handler"))

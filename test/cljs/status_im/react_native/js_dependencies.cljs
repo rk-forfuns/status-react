@@ -67,3 +67,15 @@
 (def react-navigation-stack #js {:createStackNavigator identity
                                  :TransitionPresets    #js {:ModalPresentationIOS #js {}}})
 (def react-navigation-bottom-tabs #js {:createBottomTabNavigator identity})
+
+(def react-native-haptic-feedback #js {:default #js {:trigger nil}})
+
+(def react-native-reanimated #js {:default                 #js {}
+                                  :createAnimatedComponent nil
+                                  :Easing                  #js {}
+                                  :clockRunning            nil
+                                  :View                    nil})
+(def react-native-gesture-handler #js {:default             #js {}
+                                       :State               #js {}
+                                       :PureNativeButton    #{}
+                                       :createNativeWrapper #{}})
