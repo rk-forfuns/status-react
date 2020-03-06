@@ -7,8 +7,7 @@
 
 (defn style-container [type disabled? theme]
   (merge
-   (when (= type :main)
-     {:margin-vertical 8 :margin-horizontal 16})
+   (when (= type :main))
    (cond
      (#{:main :secondary} type)
      {:padding-horizontal 32}
@@ -52,13 +51,13 @@
 
   Spec: https://www.figma.com/file/cb4p8AxLtTF3q1L6JYDnKN15/Index?node-id=858%3A0"
 
-  [{:keys [label type theme disabled? on-press accessibility-label container-style] :or {type :main theme :blue}}]
+  [{:keys [label type theme disabled? on-press accessibility-label style] :or {type :main theme :blue}}]
   (let [label (utils.label/stringify label)]
     [animated-button/button (cond-> {:on-press  on-press
                                      :duration 200
                                      :active-opacity 0.5
                                      :style (merge (style-container type disabled? theme)
-                                                   container-style)}
+                                                   style)}
                        ;;NOTE `:disabled` must be of type boolean
                               disabled?
                               (assoc :disabled (boolean disabled?))

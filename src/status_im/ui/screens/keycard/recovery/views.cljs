@@ -11,7 +11,7 @@
             [status-im.i18n :as i18n]
             [re-frame.core :as re-frame]
             [status-im.react-native.resources :as resources]
-            [status-im.ui.components.common.common :as components.common]
+            [status-im.ui.components.button :as button]
             [status-im.ui.components.text-input.view :as text-input]
             [status-im.utils.gfycat.core :as gfy]
             [status-im.utils.identicon :as identicon]
@@ -157,11 +157,11 @@
                    :height          86}
        [react/view]
        [react/view {:margin-right 20}
-        [components.common/bottom-button
+        [button/button
          {:on-press  #(re-frame/dispatch [:keycard.onboarding.pair.ui/next-pressed])
-          :label     (i18n/label :t/pair-card)
+          :label     :t/pair-card
           :disabled? (empty? pair-code)
-          :forward?  true}]]]]]))
+          :type      :next}]]]]]))
 
 (defview success []
   (letsubs [address [:hardwallet-multiaccount-wallet-address]
