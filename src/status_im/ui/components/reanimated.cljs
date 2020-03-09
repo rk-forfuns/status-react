@@ -20,8 +20,8 @@
 (def set (oget animated "set"))
 (def start-clock (oget animated "startClock"))
 (def stop-clock (oget animated "stopClock"))
-
 (def bezier (oget Easing "bezier"))
+(def linear (oget Easing "linear"))
 
 (def Value (oget animated "Value"))
 
@@ -39,12 +39,29 @@
 (defn event [config]
   (ocall animated "event" (clj->js config)))
 
-(defn cond* [condition block]
-  (ocall animated "cond"
-         condition
-         (if (vector? block)
-           (clj->js block)
-           block)))
+(defn on-change [state node]
+  (ocall animated "onChange"
+         state
+         (if (vector? node)
+           (clj->js node)
+           node)))
+
+(defn cond*
+  ([condition node]
+   (ocall animated "cond"
+          condition
+          (if (vector? node)
+            (clj->js node)
+            node)))
+  ([condition if-node else-node]
+   (ocall animated "cond"
+          condition
+          (if (vector? if-node)
+            (clj->js if-node)
+            if-node)
+          (if (vector? else-node)
+            (clj->js else-node)
+            else-node))))
 
 (defn block [opts]
   (ocall animated "block" (clj->js opts)))
@@ -55,12 +72,43 @@
 (defn call* [args callback]
   (ocall animated "call" (clj->js args) callback))
 
-(defn timing [clock opts config]
-  (ocall animated "timing" clock (clj->js opts) (clj->js config)))
+(defn timing [clock' opts config]
+  (ocall animated "timing" clock' (clj->js opts) (clj->js config)))
+
+(defn run-timing [clock' pos {:keys [toValue] :as config}]
+  (let [finished   (value 0)
+        position   (value 0)
+        time       (value 0)
+        frame-time (value 0)]
+    (block [(on-change toValue (set frame-time 0))
+            (cond* (clock-running clock')
+                   0
+                   [(set finished 0)
+                    (set time 0)
+                    (set position pos)
+                    (set frame-time 0)
+                    (start-clock clock')])
+            (timing clock'
+                    {:finished  finished
+                     :position  position
+                     :time      time
+                     :frameTime frame-time}
+                    config)
+            (cond* finished (stop-clock clock'))
+            position])))
+
+(defn run-delay [node duration]
+  (let [the-clock (clock)]
+    (block [(run-timing the-clock 0 {:toValue  1
+                                     :duration duration
+                                     :easing   linear})
+            (cond* (not* (clock-running the-clock))
+                   node)])))
 
 ;; Gesture handler
 
 (def tap-gesture-handler (reagent/adapt-react-class (oget js-deps/react-native-gesture-handler "TapGestureHandler")))
+(def long-press-gesture-handler (reagent/adapt-react-class (oget js-deps/react-native-gesture-handler "LongPressGestureHandler")))
 (def pure-native-button (oget js-deps/react-native-gesture-handler "PureNativeButton"))
 (def createNativeWrapper (oget js-deps/react-native-gesture-handler "createNativeWrapper"))
 

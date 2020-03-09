@@ -75,6 +75,11 @@
 (def pan-responder (.-PanResponder js-dependencies/react-native))
 (def animated (.-Animated js-dependencies/react-native))
 
+(def interaction-manager (get-react-property "InteractionManager"))
+(def create-interaction-handle (object/get interaction-manager "createInteractionHandle"))
+(def run-after-interaction (object/get interaction-manager "runAfterInteractions"))
+(def clear-interaction-handle (object/get interaction-manager "clearInteractionHandle"))
+
 (def animated-view-class
   (reagent/adapt-react-class (.-View animated)))
 

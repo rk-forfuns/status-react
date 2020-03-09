@@ -77,8 +77,8 @@
                                                      :or                      nil
                                                      :not                     nil
                                                      :set                     nil
-                                                     :startClock             nil
-                                                     :stopClock              nil
+                                                     :startClock              nil
+                                                     :stopClock               nil
                                                      :Value                   nil
                                                      :Clock                   nil
                                                      :debug                   nil
@@ -89,16 +89,19 @@
                                                      :interpolate             nil
                                                      :call                    nil
                                                      :timing                  nil
+                                                     :onChange                nil
                                                      :View                    #js {}}
-                                  :Easing       #js {:bezier nil}
+                                  :Easing       #js {:bezier nil
+                                                     :linear nil}
                                   :clockRunning nil})
-(def react-native-gesture-handler #js {:default             #js {}
-                                       :State               #js {:BEGAN        nil
-                                                                 :ACTIVE       nil
-                                                                 :CANCELLED    nil
-                                                                 :END          nil
-                                                                 :FAILED       nil
-                                                                 :UNDETERMINED nil}
-                                       :PureNativeButton    #{}
-                                       :TapGestureHandler   #{}
-                                       :createNativeWrapper identity})
+(def react-native-gesture-handler #js {:default                 #js {}
+                                       :State                   #js {:BEGAN        nil
+                                                                     :ACTIVE       nil
+                                                                     :CANCELLED    nil
+                                                                     :END          nil
+                                                                     :FAILED       nil
+                                                                     :UNDETERMINED nil}
+                                       :PureNativeButton        #js {}
+                                       :TapGestureHandler       #js {}
+                                       :LongPressGestureHandler #js {}
+                                       :createNativeWrapper     identity})
