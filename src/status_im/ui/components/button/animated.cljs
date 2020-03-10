@@ -10,9 +10,6 @@
                        :s3          3
                        :end-touched 7})
 
-(defn aaa []
-  (prn ":aaasdads"))
-
 (defn button-press-animation
   [{:keys [animation-state duration-val finished frame-time gesture-state
            prev-gesture-state scale-value time to-value zoom-clock scale-to
@@ -34,8 +31,6 @@
                                                               [(reanimated/set animation-state (:s0 animation-states))])
                                             (reanimated/cond* (reanimated/eq gesture-state (:end reanimated/states))
                                                               on-press)])
-                     (reanimated/cond* (reanimated/eq gesture-state (:cancelled reanimated/states))
-                                       [(reanimated/call* [] aaa)])
                      (reanimated/set prev-gesture-state gesture-state)
                      (reanimated/cond* (reanimated/eq animation-state (:s0 animation-states))
                                        [(reanimated/start-clock zoom-clock)
@@ -153,12 +148,12 @@
                      (remove-long-press-handler)
                      (clear-interaction))
               (handle-press []
-                            (react/run-after-interaction
-                             (fn []
-                               (when-not @long-press-handled
-                                 (when enable-haptic-feedback?
-                                   (haptic/trigger haptic-type))
-                                 (on-press)))))]
+                (react/run-after-interaction
+                 (fn []
+                   (when (and on-press (not @long-press-handled))
+                     (when enable-haptic-feedback?
+                       (haptic/trigger haptic-type))
+                     (on-press)))))]
         (let [scale (scale-animation (merge {:animation-state    animation-state
                                              :duration-val       duration-val
                                              :finished           finished

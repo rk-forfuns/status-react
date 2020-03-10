@@ -287,13 +287,13 @@
 
          :else
          [react/view {:style styles/bottom-arrow}
-          [react/view {:style {:margin-right 10}}
-           [button/button {:on-press            #(re-frame/dispatch [forward-action])
-                           :accessibility-label :onboarding-next-button
-                           :disabled?           (or processing?
-                                                    (and (= step :create-code) weak-password?)
-                                                    (and (= step :enter-phrase) next-button-disabled?))
-                           :type                :next}]]])
+          [button/button {:on-press            #(re-frame/dispatch [forward-action])
+                          :label               :t/next
+                          :accessibility-label :onboarding-next-button
+                          :disabled?           (or processing?
+                                                   (and (= step :create-code) weak-password?)
+                                                   (and (= step :enter-phrase) next-button-disabled?))
+                          :type                :next}]])
 
    (when (or (= :generate-key step) (and processing? (= :recovery-success step)))
      [react/text {:style (assoc styles/wizard-text :margin-top 20)}

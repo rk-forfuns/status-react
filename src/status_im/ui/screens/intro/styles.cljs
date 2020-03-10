@@ -109,6 +109,6 @@
   {:flex-direction   :row
    :justify-content  :flex-end
    :align-self       :stretch
-   :padding-top      16
+   :padding-top      4
    :border-top-width 1
    :border-top-color colors/gray-lighter})

@@ -16,8 +16,10 @@
      (= :previous type)
      {:padding-right 20 :padding-left 12}
      :else nil)
-   {:height 44 :border-radius 8
-    :align-items :center :justify-content :center
+   {:height           44
+    :border-radius    8
+    :align-items      :center
+    :justify-content  :center
     :background-color (cond
                         (#{:secondary :next :previous} type)
                         ""
@@ -25,7 +27,7 @@
                         colors/gray-transparent-10
                         (= type :main)
                         (case theme
-                          :red colors/red-transparent-10
+                          :red   colors/red-transparent-10
                           :green colors/green-transparent-10
                           colors/blue-transparent-10)
                         :else

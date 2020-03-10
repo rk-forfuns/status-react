@@ -41,8 +41,8 @@
                                 :size      :large}]]))
 
 (defn- reset-card-next-button [disabled?]
-  [react/view {:margin-right  18
-               :margin-bottom 15}
+  [react/view {:margin-right  6
+               :margin-bottom 8}
    [button/button
     {:on-press  #(re-frame/dispatch [:keycard-settings.ui/reset-card-next-button-pressed])
      :disabled? disabled?

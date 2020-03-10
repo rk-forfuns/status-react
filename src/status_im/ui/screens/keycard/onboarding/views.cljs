@@ -186,7 +186,7 @@
                     :width           "100%"
                     :height          86}
         [react/view components.styles/flex]
-        [react/view {:margin-right 20}
+        [react/view {:margin-right 8}
          [button/button
           {:on-press #(re-frame/dispatch [:keycard.onboarding.puk-code.ui/next-pressed])
            :type :next}]]]]]]))
@@ -304,7 +304,7 @@
                    :width           "100%"
                    :height          86}
        [react/view components.styles/flex]
-       [react/view {:margin-right 20}
+       [react/view {:margin-right 8}
         [button/button
          {:on-press #(re-frame/dispatch [:keycard.onboarding.recovery-phrase.ui/next-pressed])
           :label    :t/confirm
@@ -361,12 +361,12 @@
                      :align-items     :center
                      :width           "100%"
                      :height          86}
-         [react/view {:margin-left 20}
+         [react/view {:margin-left 8}
           [button/button
            {:on-press #(re-frame/dispatch [:keycard.onboarding.recovery-phrase-confirm-word.ui/back-pressed])
             :type     :back
             :label    :t/back}]]
-         [react/view {:margin-right 20}
+         [react/view {:margin-right 8}
           [button/button
            {:on-press  #(re-frame/dispatch [:keycard.onboarding.recovery-phrase-confirm-word.ui/next-pressed])
             :label     :t/next
