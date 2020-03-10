@@ -11,6 +11,7 @@
             [status-im.ui.screens.home.views.inner-item :as inner-item]
             [status-im.ui.components.list-selection :as list-selection]
             [status-im.ui.components.colors :as colors]
+            [ status-im.ui.components.button.animated :as animated.button]
             [status-im.ui.screens.add-new.new-public-chat.view :as new-public-chat]
             [status-im.ui.components.button :as button]
             [status-im.ui.components.search-input.view :as search-input]
@@ -115,11 +116,9 @@
 
 (views/defview plus-button []
   (views/letsubs [logging-in? [:multiaccounts/login]]
-    [react/view styles/action-button-container
-     [react/touchable-highlight
-      {:accessibility-label :new-chat-button
-       :on-press            (when-not logging-in?
-                              #(re-frame/dispatch [:bottom-sheet/show-sheet :add-new {}]))}
+    [react/view (styles/action-button-container home-width)
+     [animated.button/button {:accessibility-label :new-chat-button
+                              :on-press            (when-not logging-in? #(re-frame/dispatch [:bottom-sheet/show-sheet :add-new {}]))}
       [react/view styles/action-button
        (if logging-in?
          [react/activity-indicator {:color     :white
