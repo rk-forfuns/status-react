@@ -43,3 +43,5 @@
 (def react-navigation-native      (js/require "@react-navigation/native"))
 (def react-navigation-stack       (js/require "@react-navigation/stack"))
 (def react-navigation-bottom-tabs (js/require "@react-navigation/bottom-tabs"))
+
+(def react-native-iap (js/require "react-native-iap"))

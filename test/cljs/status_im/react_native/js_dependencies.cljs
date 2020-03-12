@@ -67,3 +67,10 @@
 (def react-navigation-stack #js {:createStackNavigator identity
                                  :TransitionPresets    #js {:ModalPresentationIOS #js {}}})
 (def react-navigation-bottom-tabs #js {:createBottomTabNavigator identity})
+
+(def react-native-iap #js {:default                #js {:initConnection  identity
+                                                        :requestPurchase identity
+                                                        :getProducts     identity}
+                           :purchaseUpdatedListener identity
+                           :purchaseErrorListener  identity
+                           :finishTransaction      identity})
