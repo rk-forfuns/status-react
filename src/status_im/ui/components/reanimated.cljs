@@ -36,8 +36,11 @@
 (def debug (oget animated "debug"))
 (def log (oget animated "log"))
 
-(defn event [config]
-  (ocall animated "event" (clj->js config)))
+(defn event
+  ([config]
+   (event config {:useNativeDriver true}))
+  ([config options]
+   (ocall animated "event" (clj->js config) (clj->js options))))
 
 (defn on-change [state node]
   (ocall animated "onChange"
@@ -110,13 +113,12 @@
 (def tap-gesture-handler (reagent/adapt-react-class (oget js-deps/react-native-gesture-handler "TapGestureHandler")))
 (def long-press-gesture-handler (reagent/adapt-react-class (oget js-deps/react-native-gesture-handler "LongPressGestureHandler")))
 (def pure-native-button (oget js-deps/react-native-gesture-handler "PureNativeButton"))
+(def touchable-without-feedback (oget js-deps/react-native-gesture-handler "TouchableWithoutFeedback"))
 (def createNativeWrapper (oget js-deps/react-native-gesture-handler "createNativeWrapper"))
 
 (def animated-raw-button (reagent/adapt-react-class
                           (createNativeWrapper
-                           (createAnimatedComponent pure-native-button)
-                           #js {:shouldActivateOnStart   true
-                                :shouldCancelWhenOutside true})))
+                           (createAnimatedComponent touchable-without-feedback))))
 
 (def state (oget js-deps/react-native-gesture-handler "State"))
 

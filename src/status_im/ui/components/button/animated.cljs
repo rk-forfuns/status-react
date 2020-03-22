@@ -12,25 +12,13 @@
 
 (defn button-press-animation
   [{:keys [animation-state duration-val finished frame-time gesture-state
-           prev-gesture-state scale-value time to-value zoom-clock scale-to
-           on-press on-press-start on-long-press create-interaction reset]}]
-  ;; TODO: Check that animation is not running before call of reset
-  (reanimated/block [(reanimated/cond* (reanimated/or* (reanimated/eq gesture-state (:cancelled reanimated/states))
-                                                       (reanimated/eq gesture-state (:failed reanimated/states))
-                                                       (reanimated/eq gesture-state (:end reanimated/states)))
-                                       reset)
-                     (reanimated/on-change gesture-state
-                                           [(reanimated/cond* (reanimated/eq gesture-state (:active reanimated/states))
-                                                              [create-interaction
-                                                               on-long-press
-                                                               on-press-start])
-                                            (reanimated/cond* (reanimated/or*
+           prev-gesture-state scale-value time to-value zoom-clock scale-to]}]
+  (reanimated/block [(reanimated/on-change gesture-state
+                                           [(reanimated/cond* (reanimated/or*
                                                                (reanimated/eq gesture-state (:active reanimated/states))
                                                                (reanimated/and* (reanimated/neq prev-gesture-state (:active reanimated/states))
                                                                                 (reanimated/eq gesture-state (:undetermined reanimated/states))))
-                                                              [(reanimated/set animation-state (:s0 animation-states))])
-                                            (reanimated/cond* (reanimated/eq gesture-state (:end reanimated/states))
-                                                              on-press)])
+                                                              [(reanimated/set animation-state (:s0 animation-states))])])
                      (reanimated/set prev-gesture-state gesture-state)
                      (reanimated/cond* (reanimated/eq animation-state (:s0 animation-states))
                                        [(reanimated/start-clock zoom-clock)
@@ -68,11 +56,7 @@
 
 (defn scale-animation
   [{:keys [animation-state duration-val finished frame-time gesture-state
-           prev-gesture-state scale-to scale-value time to-value zoom-clock
-           on-press on-press-start on-long-press
-           reset create-interaction]
-    :or   {on-press-start identity
-           on-long-press  identity}}]
+           prev-gesture-state scale-to scale-value time to-value zoom-clock]}]
   (reanimated/block [(reanimated/block [(reanimated/cond* (reanimated/and* (reanimated/eq gesture-state (:end reanimated/states))
                                                                            (reanimated/eq prev-gesture-state (:end-touched animation-states))
                                                                            (reanimated/not* (reanimated/clock-running zoom-clock)))
@@ -91,12 +75,7 @@
                                               :time               time
                                               :to-value           to-value
                                               :zoom-clock         zoom-clock
-                                              :scale-to           scale-to
-                                              :create-interaction (reanimated/call* [] create-interaction)
-                                              :reset              (reanimated/call* [] reset)
-                                              :on-press           (reanimated/call* [] on-press)
-                                              :on-long-press      (reanimated/call* [] on-long-press)
-                                              :on-press-start     (reanimated/call* [] on-press-start)})]))
+                                              :scale-to           scale-to})]))
 
 (defn button [{:keys [duration]
                :or   {duration 200}}]
@@ -110,80 +89,55 @@
         scale-value        (reanimated/value 1)
         time               (reanimated/value 0)
         to-value           (reanimated/value 0.5)
-        zoom-clock         (reanimated/clock)
-        long-press-timeout (atom nil)
-        long-press-handled (atom false)
-        handle             (atom nil)]
-    (fn [{:keys [style on-long-press on-press-start on-press disabled
-                 enable-haptic-feedback? haptic-type scale-to active-opacity
-                 accessibility-label long-press-duration]
-          :or   {enable-haptic-feedback? true
-                 scale-to                0.8
-                 active-opacity          1
-                 long-press-duration     800
-                 haptic-type             :selection}} & children]
-      (letfn [(handle-long-press []
-                (on-long-press)
-                (reset! long-press-handled true)
-                (js/clearTimeout @long-press-timeout)
-                (reset! long-press-timeout nil)
-                (when enable-haptic-feedback?
-                  (haptic/trigger haptic-type)))
-              (create-long-press-handler []
-                                         (reset! long-press-handled false)
-                                         (reset! long-press-timeout
-                                                 (js/setTimeout handle-long-press long-press-duration)))
-              (remove-long-press-handler []
-                                         (when @long-press-timeout
-                                           (js/clearTimeout @long-press-timeout))
-                                         (reset! long-press-timeout nil))
-              (create-interaction []
-                                  (when-not @handle
-                                    (reset! handle (react/create-interaction-handle))))
-              (clear-interaction []
-                                 (when @handle
-                                   (react/clear-interaction-handle @handle)
-                                   (reset! handle nil)))
-              (reset []
-                     (remove-long-press-handler)
-                     (clear-interaction))
-              (handle-press []
-                (react/run-after-interaction
-                 (fn []
-                   (when (and on-press (not @long-press-handled))
-                     (when enable-haptic-feedback?
-                       (haptic/trigger haptic-type))
-                     (on-press)))))]
-        (let [scale (scale-animation (merge {:animation-state    animation-state
-                                             :duration-val       duration-val
-                                             :finished           finished
-                                             :frame-time         frame-time
-                                             :gesture-state      gesture-state
-                                             :on-press           handle-press
-                                             :prev-gesture-state prev-gesture-state
-                                             :scale-to           scale-to
-                                             :scale-value        scale-value
-                                             :time               time
-                                             :to-value           to-value
-                                             :zoom-clock         zoom-clock
-                                             :create-interaction create-interaction
-                                             :reset              reset}
-                                            (when on-long-press
-                                              {:on-long-press create-long-press-handler})
-                                            (when on-press-start
-                                              {:on-press-start on-press-start})))]
-          (into [reanimated/animated-raw-button
-                 {:on-handler-state-change on-gesture-event
-                  :enabled                 (not disabled)
-                  :accessibility-label     accessibility-label
-                  :style                   (merge style
-                                                  {:opacity   (reanimated/interpolate
-                                                               scale-value
-                                                               {:inputRange  (if (> scale-to 1)
-                                                                               [1 scale-to]
-                                                                               [scale-to 1])
-                                                                :outputRange (if (> scale-to 1)
-                                                                               [1 active-opacity]
-                                                                               [active-opacity 1])})
-                                                   :transform [{:scale scale}]})}]
-                children))))))
+        zoom-clock         (reanimated/clock)]
+    (fn [{:keys [style on-long-press on-press-in on-press disabled
+                enable-haptic-feedback? haptic-type scale-to active-opacity
+                accessibility-label]
+         :or  {enable-haptic-feedback? true
+               scale-to                0.8
+               active-opacity          1
+               haptic-type             :selection}} & children]
+      (let [scale           (scale-animation (merge {:animation-state    animation-state
+                                                     :duration-val       duration-val
+                                                     :finished           finished
+                                                     :frame-time         frame-time
+                                                     :gesture-state      gesture-state
+                                                     :prev-gesture-state prev-gesture-state
+                                                     :scale-to           scale-to
+                                                     :scale-value        scale-value
+                                                     :time               time
+                                                     :to-value           to-value
+                                                     :zoom-clock         zoom-clock}))
+            optional-haptic (fn []
+                              (when enable-haptic-feedback?
+                                (haptic/trigger haptic-type)))]
+        [reanimated/animated-raw-button
+         (merge {:on-handler-state-change on-gesture-event
+                 :disabled                disabled
+                 :container-style         {:overflow :visible}
+                 :accessibility-label     accessibility-label
+                 :style                   (merge style
+                                                 (when-not disabled
+                                                   {:opacity   (reanimated/interpolate
+                                                                scale-value
+                                                                {:inputRange  (if (> scale-to 1)
+                                                                                [1 scale-to]
+                                                                                [scale-to 1])
+                                                                 :outputRange (if (> scale-to 1)
+                                                                                [1 active-opacity]
+                                                                                [active-opacity 1])})
+                                                    :transform [{:scale scale}]}))}
+                (when on-press
+                  {:on-press (fn []
+                               (on-press)
+                               (optional-haptic))})
+                (when on-long-press
+                  {:on-long-press (fn []
+                                    (on-long-press)
+                                    (optional-haptic))})
+                (when on-press-in
+                  {:on-press-in (fn []
+                                  (on-press-in)
+                                  (optional-haptic))}))
+         (into [react/view {:accessible true}]
+               children)]))))

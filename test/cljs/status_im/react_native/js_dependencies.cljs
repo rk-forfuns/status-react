@@ -94,14 +94,15 @@
                                   :Easing       #js {:bezier nil
                                                      :linear nil}
                                   :clockRunning nil})
-(def react-native-gesture-handler #js {:default                 #js {}
-                                       :State                   #js {:BEGAN        nil
-                                                                     :ACTIVE       nil
-                                                                     :CANCELLED    nil
-                                                                     :END          nil
-                                                                     :FAILED       nil
-                                                                     :UNDETERMINED nil}
-                                       :PureNativeButton        #js {}
-                                       :TapGestureHandler       #js {}
-                                       :LongPressGestureHandler #js {}
-                                       :createNativeWrapper     identity})
+(def react-native-gesture-handler #js {:default                  #js {}
+                                       :State                    #js {:BEGAN        nil
+                                                                      :ACTIVE       nil
+                                                                      :CANCELLED    nil
+                                                                      :END          nil
+                                                                      :FAILED       nil
+                                                                      :UNDETERMINED nil}
+                                       :PureNativeButton         #js {}
+                                       :TapGestureHandler        #js {}
+                                       :LongPressGestureHandler  #js {}
+                                       :TouchableWithoutFeedback #js {}
+                                       :createNativeWrapper      identity})

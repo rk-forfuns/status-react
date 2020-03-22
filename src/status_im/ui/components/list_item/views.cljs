@@ -386,7 +386,7 @@
                          :on-layout #(reset! width (-> % .-nativeEvent .-layout .-width))}
              [animated.button/button
               (cond-> {:on-press       (when (not theme-select?) on-press)
-                       :on-press-start (when theme-select? on-press)
+                       :on-press-in    (when theme-select? on-press)
                        :on-long-press  on-long-press
                        :scale-to       0.95
                        ;; :underlay-color colors/gray-transparent-40
