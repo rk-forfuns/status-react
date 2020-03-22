@@ -90,7 +90,7 @@
        [react/view styles/processing-view
         [react/activity-indicator {:animating true}]
         [react/i18n-text {:style styles/processing :key :processing}]])
-     [react/view {:style styles/bottom-button-container}
+     [react/view {:style ast/bottom-button-container}
       [button/button
        {:label    :t/access-key
         :style    styles/bottom-button
@@ -98,6 +98,7 @@
         :on-press #(do
                      (react/dismiss-keyboard!)
                      (re-frame/dispatch [:multiaccounts.recover.ui/recover-multiaccount-button-pressed]))}]
+      [react/view {:flex 1}]
       [button/button
        {:label     :t/submit
         :style     styles/bottom-button

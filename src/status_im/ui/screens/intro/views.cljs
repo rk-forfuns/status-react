@@ -16,6 +16,7 @@
             [reagent.core :as r]
             [status-im.ui.components.button :as button]
             [status-im.ui.screens.intro.styles :as styles]
+            [status-im.ui.screens.multiaccounts.styles :as m.styles]
             [status-im.utils.platform :as platform]
             [status-im.utils.security :as security]
             [status-im.i18n :as i18n]
@@ -254,13 +255,7 @@
                           next-button-disabled?
                           processing? existing-account?]
                    :as   wizard-state}]
-  [react/view {:style {:margin-bottom (if (or (#{:choose-key :select-key-storage
-                                                 :enter-phrase :recovery-success} step)
-                                              (and (#{:create-code :confirm-code} step)
-                                                   encrypt-with-password?))
-                                        20
-                                        32)
-                       :align-items   :center}}
+  [react/view {:style {:align-items :center}}
    (cond (and (#{:generate-key :recovery-success} step) processing?)
          [react/view {:min-height 46 :max-height 46 :align-self :stretch}
           [react/activity-indicator {:animating true
@@ -286,7 +281,8 @@
                          :type                :secondary}]
 
          :else
-         [react/view {:style styles/bottom-arrow}
+         [react/view {:style m.styles/bottom-button-container}
+          [react/view {:flex 1}]
           [button/button {:on-press            #(re-frame/dispatch [forward-action])
                           :label               :t/next
                           :accessibility-label :onboarding-next-button

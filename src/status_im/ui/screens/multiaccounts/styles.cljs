@@ -42,13 +42,6 @@
   {:font-family "monospace"
    :color       colors/gray})
 
-(def bottom-button
-  {:padding-horizontal 24
-   :justify-content    :center
-   :align-items        :center
-   :align-self         :center
-   :flex-direction     :row})
-
 (def bottom-button-container
   {:flex-direction     :row
    :padding-horizontal 12

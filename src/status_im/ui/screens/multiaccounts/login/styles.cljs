@@ -24,15 +24,6 @@
    :align-self         :center
    :flex-direction     :row})
 
-(def bottom-button-container
-  {:flex-direction     :row
-   :padding-horizontal 12
-   :padding-vertical   8
-   :border-top-width   1
-   :border-top-color   colors/gray-lighter
-   :justify-content    :space-between
-   :align-items        :center})
-
 (def login-badge
   {:align-items :center})
 
