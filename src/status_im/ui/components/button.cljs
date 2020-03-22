@@ -69,16 +69,17 @@
       (when (= type :previous)
         [vector-icons/icon :main-icons/back {:container-style {:width 24 :height 24 :margin-right 4}
                                              :color           (if disabled? colors/gray colors/blue)}])
-      [react/text {:style {:color (cond
-                                    disabled?
-                                    colors/gray
-                                    (#{:main :secondary :next :previous} type)
-                                    (case theme
-                                      :green colors/green
-                                      :red   colors/red
-                                      colors/blue)
-                                    :else
-                                    "")}}
+      [react/text {:style {:font-weight "500"
+                           :color       (cond
+                                          disabled?
+                                          colors/gray
+                                          (#{:main :secondary :next :previous} type)
+                                          (case theme
+                                            :green colors/green
+                                            :red   colors/red
+                                            colors/blue)
+                                          :else
+                                          "")}}
        label]
       (when (= type :next)
         [vector-icons/icon :main-icons/next {:container-style {:width 24 :height 24 :margin-left 4}
