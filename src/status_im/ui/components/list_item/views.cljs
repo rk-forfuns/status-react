@@ -358,11 +358,13 @@
                  title title-color-override title-row-accessory
                  title-accessibility-label subtitle subtitle-max-lines
                  subtitle-row-accessory content accessories on-press
-                 on-long-press error accessibility-label disabled? selected?]
+                 on-long-press error accessibility-label disabled? selected?
+                 animated?]
           :or   {react-key               r-key
                  type                    :default
                  theme                   :default
                  disabled?               false
+                 animated?               false
                  container-margin-top    0
                  container-margin-bottom 0
                  subtitle-max-lines      1}}]
@@ -377,14 +379,17 @@
                                      :subtitle-max-lines     subtitle-max-lines
                                      :subtitle-row-accessory subtitle-row-accessory}
               theme-select?         (= theme :selectable)
-              radio-selected?       (and theme-select? selected?)]
+              radio-selected?       (and theme-select? selected?)
+              button-component      (if animated?
+                                      animated.button/button
+                                      react/touchable-highlight)]
           ^{:key react-key}
           (if (= type :divider)
             divider
             [react/view {:style     {:margin-top    container-margin-top
                                      :margin-bottom container-margin-bottom}
                          :on-layout #(reset! width (-> % .-nativeEvent .-layout .-width))}
-             [animated.button/button
+             [button-component
               (cond-> {:on-press       (when (not theme-select?) on-press)
                        :on-press-in    (when theme-select? on-press)
                        :on-long-press  on-long-press

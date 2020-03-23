@@ -91,12 +91,12 @@
         to-value           (reanimated/value 0.5)
         zoom-clock         (reanimated/clock)]
     (fn [{:keys [style on-long-press on-press-in on-press disabled
-                enable-haptic-feedback? haptic-type scale-to active-opacity
-                accessibility-label]
-         :or  {enable-haptic-feedback? true
-               scale-to                0.8
-               active-opacity          1
-               haptic-type             :selection}} & children]
+                 enable-haptic-feedback? haptic-type scale-to active-opacity
+                 accessibility-label]
+          :or  {enable-haptic-feedback? true
+                scale-to                0.8
+                active-opacity          1
+                haptic-type             :selection}} & children]
       (let [scale           (scale-animation (merge {:animation-state    animation-state
                                                      :duration-val       duration-val
                                                      :finished           finished
