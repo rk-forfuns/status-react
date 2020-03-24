@@ -786,6 +786,14 @@
                            :on-accept           #(re-frame/dispatch [:group-chats.ui/remove-chat-confirmed chat-id])}}))
 
 (handlers/register-handler-fx
+ :group-chats.ui/leave-chat-pressed
+ (fn [_ [_ chat-id group?]]
+   {:ui/show-confirmation {:title               (i18n/label :t/leave-confirmation)
+                           :content             (i18n/label :t/leave-chat-confirmation)
+                           :confirm-button-text (i18n/label :t/leave)
+                           :on-accept           #(re-frame/dispatch [:group-chats.ui/leave-chat-confirmed chat-id])}}))
+
+(handlers/register-handler-fx
  :group-chats.ui/remove-chat-confirmed
  (fn [cofx [_ chat-id]]
    (group-chats/remove cofx chat-id)))

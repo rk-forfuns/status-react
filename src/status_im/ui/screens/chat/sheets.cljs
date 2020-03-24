@@ -130,6 +130,12 @@
      :icon     :main-icons/arrow-down
      :on-press #(hide-sheet-and-dispatch [:chat.ui/fetch-history-pressed chat-id])}]
    [list-item/list-item
+    {:theme    :action
+     :title    :t/leave-chat
+     :accessibility-label :leave-chat-button
+     :icon     :main-icons/arrow-left
+     :on-press #(hide-sheet-and-dispatch [:group-chats.ui/leave-chat-pressed chat-id])}]
+   [list-item/list-item
     {:theme    :action-destructive
      :title    :t/delete-chat
      :accessibility-label :delete-chat-button

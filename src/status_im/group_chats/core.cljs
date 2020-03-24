@@ -102,7 +102,15 @@
   "Remove & leave chat"
   [{:keys [db] :as cofx} chat-id]
   {::json-rpc/call [{:method (json-rpc/call-ext-method (waku/enabled? cofx) "leaveGroupChat")
-                     :params [nil chat-id]
+                     :params [nil chat-id true]
+                     :on-success #(re-frame/dispatch [::chat-updated %])}]})
+
+(fx/defn leave
+  "Leave chat"
+  {:events [:group-chats.ui/leave-chat-confirmed]}
+  [{:keys [db] :as cofx} chat-id]
+  {::json-rpc/call [{:method (json-rpc/call-ext-method (waku/enabled? cofx) "leaveGroupChat")
+                     :params [nil chat-id false]
                      :on-success #(re-frame/dispatch [::chat-updated %])}]})
 
 (defn- valid-name? [name]
