@@ -253,8 +253,9 @@
            [activity-indicator {:animating true}]])
       comp)))
 
-(def safe-area-provider (adapt-class SafeAreaProvider))
-(def safe-area-consumer (adapt-class SafeAreaConsumer))
-(def safe-area-view (adapt-class SafeAreaView))
+(def safe-area-provider (reagent/adapt-react-class SafeAreaProvider))
+(def safe-area-consumer (reagent/adapt-react-class SafeAreaConsumer))
 
-(def touchable-without-feedback-gesture (adapt-class TouchableWithoutFeedback))
+(def safe-area-view (reagent/adapt-react-class SafeAreaView))
+
+(def touchable-without-feedback-gesture (reagent/adapt-react-class TouchableWithoutFeedback))

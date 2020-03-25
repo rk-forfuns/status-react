@@ -11,13 +11,6 @@
    ["@react-navigation/bottom-tabs" :refer (createBottomTabNavigator)]
    [oops.core :refer [ocall oget]]
    [status-im.utils.core :as utils]
-   [status-im.ui.screens.routing.screens :as screens]
-   [status-im.ui.screens.routing.intro-login-stack :as intro-login-stack]
-   [status-im.ui.screens.routing.chat-stack :as chat-stack]
-   [status-im.ui.screens.routing.wallet-stack :as wallet-stack]
-   [status-im.ui.screens.routing.profile-stack :as profile-stack]
-   [status-im.ui.screens.routing.browser-stack :as browser-stack]
-   [status-im.ui.screens.routing.modals :as modals]
    [status-im.ui.components.tabbar.core :as tabbar]
    [status-im.ui.components.status-bar.view :as status-bar]
    [status-im.ui.components.tabbar.styles :as tabs.styles]))
