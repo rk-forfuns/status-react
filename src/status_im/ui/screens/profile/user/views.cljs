@@ -61,19 +61,21 @@
                                         ;:icon                :main-icons/link
           :accessibility-label :share-my-contact-code-button}]]])))
 
-(defn- header [{:keys [photo-path] :as account} photo-added?]
+(defn- header [{:keys [photo-path public-key ens-name] :as account} photo-added?]
   [profile.components/profile-header
    {:contact                account
     ;;set to true if we want to re-enable custom icon
     :allow-icon-change?     false
     :include-remove-action?  photo-added?}])
 
-(defn- header-in-toolbar [account]
+(defn- header-in-toolbar [{:keys [public-key ens-name] :as account}]
   (let [displayed-name (multiaccounts/displayed-name account)]
-    [react/view {:flex           1
-                 :flex-direction :row
-                 :align-items    :center
-                 :align-self     :stretch}
+    [react/touchable-opacity
+     {:on-press #(profile.components/chat-key-popover public-key ens-name)
+      :style {:flex           1
+              :flex-direction :row
+              :align-items    :center
+              :align-self     :stretch}}
      ;;TODO this should be done in a subscription
      [photos/photo (multiaccounts/displayed-photo account) {:size 40}]
      [react/text {:style {:typography   :title-bold
@@ -88,10 +90,7 @@
    [{:icon      :main-icons/share
      :icon-opts {:width  24
                  :height 24}
-     :handler   #(re-frame/dispatch [:show-popover
-                                     {:view :share-chat-key
-                                      :address public-key
-                                      :ens-name ens-name}])}]])
+     :handler #(profile.components/chat-key-popover public-key ens-name)}]])
 
 (defn tribute-to-talk-item
   [opts]
