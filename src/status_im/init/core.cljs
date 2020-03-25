@@ -54,7 +54,6 @@
   (fx/merge cofx
             {:get-supported-biometric-auth          nil
              ::init-keystore                        nil
-             ::restore-native-settings              nil
              ::open-multiaccounts                   #(re-frame/dispatch [::initialize-multiaccounts % {:logout? false}])
              :ui/listen-to-window-dimensions-change nil
              ::network/listen-to-network-info       nil
