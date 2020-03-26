@@ -19,9 +19,9 @@
   [topbar/topbar
    (when admin?
      {:accessories
-      [{:label               :t/edit
+      [{:icon                :icons/edit
         :accessibility-label :edit-button
-        :handler             #(re-frame/dispatch [:group-chat-profile/start-editing])}]})])
+        :handler             #(re-frame/dispatch [:navigate-to :edit-group-chat-name])}]})])
 
 (defn member-sheet [chat-id member us-admin?]
   [react/view
@@ -75,7 +75,7 @@
                        :key-fn    :address
                        :render-fn #(render-member chat-id % admin? current-user-identity)}])))
 
-(defn members-list [chat-id admin? current-user-identity allow-adding-members?]
+(defn members-list [{:keys [chat-id admin? current-pk allow-adding-members?]}]
   [react/view
    [list-item/list-item {:title :t/members-title :type :section-header}]
    (when allow-adding-members?
@@ -84,10 +84,10 @@
        :icon     :main-icons/add-contact
        :theme    :action
        :on-press #(re-frame/dispatch [:navigate-to :add-participants-toggle-list])}])
-   [chat-group-members-view chat-id admin? current-user-identity]])
+   [chat-group-members-view chat-id admin? current-pk]])
 
 (defview group-chat-profile []
-  (letsubs [{:keys [admins chat-id] :as current-chat} [:chats/current-chat]
+  (letsubs [{:keys [admins chat-id joined?] :as current-chat} [:chats/current-chat]
             editing?     [:group-chat-profile/editing?]
             members      [:contacts/current-chat-contacts]
             changed-chat [:group-chat-profile/profile]
@@ -95,13 +95,10 @@
     (when current-chat
       (let [shown-chat            (merge current-chat changed-chat)
             admin?                (get admins current-pk)
-            allow-adding-members? (and admin?
+            allow-adding-members? (and admin? joined?
                                        (< (count members) constants/max-group-chat-participants))]
         [react/view profile.components.styles/profile
-         ;;TODO doesn't work, needs to be fixed
-         ;(if editing?
-           ;[group-chat-profile-edit-toolbar]
-         [group-chat-profile-toolbar false];admin?]
+         [group-chat-profile-toolbar (and admin? joined?)]
          [react/scroll-view
           [react/view profile.components.styles/profile-form
            [react/view {:style {:border-bottom-width 1
@@ -109,10 +106,20 @@
                                 :margin-bottom       8
                                 :border-bottom-color colors/gray-lighter}}
             [profile.components/group-header-display shown-chat]]
+           (when joined?
+            [list-item/list-item
+             {:theme               :action
+              :title               :t/leave-chat
+              :accessibility-label :leave-chat-button
+              :icon                :main-icons/arrow-left
+              :on-press            #(re-frame/dispatch [:group-chats.ui/leave-chat-pressed chat-id])}]) 
            [list-item/list-item
             {:theme               :action-destructive
              :title               :t/delete-chat
              :accessibility-label :delete-chat-button
              :icon                :main-icons/delete
              :on-press            #(re-frame/dispatch [:group-chats.ui/remove-chat-pressed chat-id])}]
-           [members-list chat-id admin? (first admins) current-pk allow-adding-members?]]]]))))
+           [members-list {:chat-id               chat-id
+                          :admin?                admin?
+                          :current-pk            current-pk
+                          :allow-adding-members? allow-adding-members?}]]]]))))

@@ -729,7 +729,8 @@
 
        (and (chat.models/group-chat? current-chat)
             (group-chats.db/joined? my-public-key current-chat))
-       (assoc :show-input? true)
+       (assoc :show-input? true
+              :joined? true)
 
        (not group-chat)
        (assoc :show-input? true)))))
