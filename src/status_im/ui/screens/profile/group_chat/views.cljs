@@ -107,12 +107,12 @@
                                 :border-bottom-color colors/gray-lighter}}
             [profile.components/group-header-display shown-chat]]
            (when joined?
-            [list-item/list-item
-             {:theme               :action
-              :title               :t/leave-chat
-              :accessibility-label :leave-chat-button
-              :icon                :main-icons/arrow-left
-              :on-press            #(re-frame/dispatch [:group-chats.ui/leave-chat-pressed chat-id])}]) 
+             [list-item/list-item
+              {:theme               :action
+               :title               :t/leave-chat
+               :accessibility-label :leave-chat-button
+               :icon                :main-icons/arrow-left
+               :on-press            #(re-frame/dispatch [:group-chats.ui/leave-chat-pressed chat-id])}])
            [list-item/list-item
             {:theme               :action-destructive
              :title               :t/delete-chat

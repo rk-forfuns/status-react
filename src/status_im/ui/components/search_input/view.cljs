@@ -10,8 +10,8 @@
 (defn search-input [_]
   (let [input-ref (atom nil)]
     (fn [{:keys [on-cancel on-focus on-change search-active?
-                search-container-style search-filter auto-focus]
-         :or   {search-active? (reagent/atom nil)}}]
+                 search-container-style search-filter auto-focus]
+          :or   {search-active? (reagent/atom nil)}}]
       [react/view {:style (or search-container-style (styles/search-container))}
        [react/view {:style (styles/search-input-container)}
         [icons/icon :main-icons/search {:color           colors/gray
