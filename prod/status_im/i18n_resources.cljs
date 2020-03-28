@@ -5,7 +5,7 @@
 (def default-device-language
   (keyword (.-language rn-dependencies/react-native-languages)))
 
-(def languages [:af :ar :bel :cs :da :de :de_ch :el :en :es :es_419 :es_ar :es_mx :fa :fi :fil :fr :fr_ch :fy :he :hi :hu :id :it_ch :ja :ko :la :lt :lv :ms :nb :ne :nl :pl :pt_br :pt_pt :ro :ru :sl :sr_rs_cyrl :sr_rs :latn :sv :sw :th :tr :uk :ur :vi :zh])
+(def languages [:af :ar :bel :cs :da :de :de_ch :el :en :es :es_419 :es_ar :es_mx :fa :fi :fil :fr :fr_ch :fy :he :hi :hu :id :in :it_ch :ja :ko :la :lt :lv :ms :nb :ne :nl :pl :pt_br :pt_pt :ro :ru :sl :sr_rs_cyrl :sr_rs :latn :sv :sw :th :tr :uk :ur :vi :zh :zh_Hant :zh_TW])
 
 (defonce loaded-languages
   (atom
@@ -35,6 +35,7 @@
       :hi         (js/require "status-modules/translations/hi.json")
       :hu         (js/require "status-modules/translations/hu.json")
       :id         (js/require "status-modules/translations/id.json")
+      :in         (js/require "status-modules/translations/id.json")
       :it         (js/require "status-modules/translations/it.json")
       :it_ch      (js/require "status-modules/translations/it_ch.json")
       :ja         (js/require "status-modules/translations/ja.json")
@@ -61,7 +62,9 @@
       :uk         (js/require "status-modules/translations/uk.json")
       :ur         (js/require "status-modules/translations/ur.json")
       :vi         (js/require "status-modules/translations/vi.json")
-      :zh         (js/require "status-modules/translations/zh.json")})
+      :zh         (js/require "status-modules/translations/zh.json")
+      :zh_Hant      (js/require "status-modules/translations/zh_TW.json")
+      :zh_TW         (js/require "status-modules/translations/zh_TW.json")})
 
 (defn valid-language [lang]
   (if (contains? prod-translations lang)
