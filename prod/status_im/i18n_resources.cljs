@@ -69,9 +69,13 @@
 (defn valid-language [lang]
   (if (contains? prod-translations lang)
     lang
-    (let [short-lang (keyword (first (string/split (name lang) #"_")))]
-      (when (contains? prod-translations short-lang)
-        short-lang))))
+    (let [parts (string/split (name lang) #"_")
+          short-lang (keyword (str (first parts) "_" (second parts)))
+          shortest-lang (keyword (first parts))]
+      (if (and (> (count parts) 2) (contains? prod-translations short-lang))
+        short-lang
+        (when (contains? prod-translations shortest-lang)
+          shortest-lang)))))
 
 (defn require-translation [lang-key]
   (when-let [lang (valid-language lang-key)]
