@@ -18,14 +18,14 @@
   {:flex            1
    :justify-content :center})
 
-(def name-text
-  {:color     colors/text
+(defn name-text []
+  {:color     colors/gray
    :font-size 17})
 
-(def info-text
+(defn info-text []
   {:margin-top 1
    :font-size  12
-   :color      colors/text-gray})
+   :color      colors/gray})
 
 (def forward-btn
   {:opacity         0.4

@@ -6,7 +6,9 @@
             [status-im.ui.screens.profile.components.styles :as profile.components.styles]
             [status-im.ui.screens.profile.components.views :as profile.components]
             [status-im.ui.components.contact.contact :as contact]
+            [status-im.ui.components.icons.vector-icons :as vector-icons]
             [status-im.ui.components.list.views :as list]
+            [status-im.ui.components.chat-icon.screen :as chat-icon]
             [status-im.ui.screens.chat.sheets :as chat.sheets]
             [status-im.multiaccounts.core :as multiaccounts]
             [status-im.ui.components.colors :as colors]
@@ -52,21 +54,23 @@
        :icon                :main-icons/remove-contact
        :on-press            #(chat.sheets/hide-sheet-and-dispatch [:group-chats.ui/remove-member-pressed chat-id (:public-key member)])}])])
 
-(defn render-member [chat-id {:keys [name public-key] :as member} admin? current-user-identity]
-  [contact/contact-view
-   {:contact             member
-    :extend-options      #(re-frame/dispatch [:bottom-sheet/show-sheet
-                                              {:content (fn []
-                                                          [member-sheet chat-id member admin?])}])
-    :info                (when (:admin? member)
-                           (i18n/label :t/group-chat-admin))
-    :extend-title        name
-    :extended?           (and admin?
-                              (not= public-key current-user-identity))
-    :accessibility-label :member-item
-    :inner-props         {:accessibility-label :member-name-text}
-    :on-press            (when (not= public-key current-user-identity)
-                           #(re-frame/dispatch [(if platform/desktop? :show-profile-desktop :chat.ui/show-profile) public-key]))}])
+(defn render-member [chat-id {:keys [public-key] :as member} admin? current-user-identity]
+  [list-item/list-item
+   (merge
+    {:title                (contact/format-name member)
+     :accessibility-label :member-item
+     :icon                [chat-icon/contact-icon-contacts-tab member]
+     :on-press            (when (not= public-key current-user-identity)
+                            #(re-frame/dispatch [(if platform/desktop? :show-profile-desktop :chat.ui/show-profile) public-key]))}
+    (when (:admin? member)
+      {:accessories [(i18n/label :t/group-chat-admin)]})
+    (when (and admin?
+               (not= public-key current-user-identity))
+      {:accessories [[react/touchable-highlight {:on-press            #(re-frame/dispatch [:bottom-sheet/show-sheet
+                                                                                           {:content (fn []
+                                                                                                       [member-sheet chat-id member admin?])}])
+                                                 :accessibility-label :menu-option}
+                      [vector-icons/icon :main-icons/more {:accessibility-label :options}]]]}))])
 
 (defview chat-group-members-view [chat-id admin? current-user-identity]
   (letsubs [members [:contacts/current-chat-contacts]]

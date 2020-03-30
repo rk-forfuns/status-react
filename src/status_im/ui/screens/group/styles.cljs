@@ -16,17 +16,13 @@
    :opacity (if enabled? 1 0.3)})
 
 (def group-container
-  {:flex             1
-   :flex-direction   :column
-   :background-color colors/white})
+  {:flex           1
+   :flex-direction :column})
 
 (def contact
   {:padding-left 0})
 
-(def contacts-list
-  {:background-color colors/white})
-
-(def no-contact-text
+(defn no-contact-text []
   {:margin-bottom     20
    :margin-horizontal 50
    :text-align        :center
@@ -38,12 +34,11 @@
    :font-size         12
    :margin-horizontal 17})
 
-(def bottom-container
+(defn bottom-container []
   {:align-items      :center
    :justify-content  :space-between
    :flex-direction   :row
    :height           tabs-height
-   :background-color colors/white
    :border-top-width 1
    :border-top-color colors/gray-lighter})
 
@@ -55,7 +50,7 @@
 (def toolbar-header-container
   {:align-items :center})
 
-(def toolbar-sub-header
+(defn toolbar-sub-header []
   {:color colors/gray})
 
 (def no-contacts
@@ -63,11 +58,11 @@
    :justify-content :center
    :align-items :center})
 
-(def search-container
+(defn search-container []
   {:border-bottom-color colors/gray-lighter
    :border-bottom-width 1})
 
-(def members-title
+(defn members-title []
   {:color         colors/gray
    :margin-top    14
    :margin-bottom 4})
