@@ -4,11 +4,12 @@
    [status-im.hardwallet.real-keycard :as real-keycard]
    [status-im.hardwallet.simulated-keycard :as simulated-keycard]
    [taoensso.timbre :as log]
-   [re-frame.core :as re-frame]))
+   [re-frame.core :as re-frame]
+   [status-im.utils.config :as config]))
 
-(defonce card (if false
-                (real-keycard/RealKeycard.)
-                (simulated-keycard/SimulatedKeycard.)))
+(defonce card (if config/keycard-test-menu-enabled?
+                (simulated-keycard/SimulatedKeycard.)
+                (real-keycard/RealKeycard.)))
 
 (defn check-nfc-support []
   (log/info "[keycard] check-nfc-support")

@@ -2,10 +2,11 @@
   (:require [status-im.hardwallet.keycard :as keycard]
             [status-im.utils.utils :as utils]))
 
-(defonce state
-  (atom
-   {:card-connected?  false
-    :application-info {:initialized? false}}))
+(def initial-state
+  {:card-connected?  false
+   :application-info {:initialized? false}})
+
+(defonce state (atom initial-state))
 
 (defn connect-card []
   (swap! state assoc :card-connected? true)
@@ -16,6 +17,9 @@
   (swap! state assoc :card-connected? false)
   (doseq [callback (vals (get @state :on-card-disconnected))]
     (callback)))
+
+(defn reset-state []
+  (reset! state initial-state))
 
 (defn- later [f]
   (utils/set-timeout f 500))
