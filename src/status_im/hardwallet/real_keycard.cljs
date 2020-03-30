@@ -42,7 +42,7 @@
   (doseq [listener @active-listeners]
     (remove-event-listener listener))
   (reset! active-listeners
-          [(on-card-connected (:on-card-conncted args))
+          [(on-card-connected (:on-card-connected args))
            (on-card-disconnected (:on-card-disconnected args))
            (on-nfc-enabled (:on-nfc-enabled args))
            (on-nfc-disabled (:on-nfc-disabled args))]))
@@ -58,6 +58,7 @@
       installApplet
       (then on-success)
       (catch on-failure)))
+
 (defn init-card [{:keys [pin on-success on-failure]}]
   (.. status-keycard
       (init pin)

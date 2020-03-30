@@ -6,7 +6,7 @@
    [taoensso.timbre :as log]
    [re-frame.core :as re-frame]))
 
-(defonce card (if true
+(defonce card (if false
                 (real-keycard/RealKeycard.)
                 (simulated-keycard/SimulatedKeycard.)))
 
